@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	// "log"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -74,18 +73,19 @@ func (dba* DatabaseAccessor) ListUsers() (map[string]float32, error) {
 	return ret, nil
 }
 
-func (dba* DatabaseAccessor) UserPassword(username string) (string, error) {
+func (dba* DatabaseAccessor) GetUser(username string) (string, float32, error) {
 	if (dba.db == nil) {
-		return "", errors.New("Database connection is nil")
+		return "", 0, errors.New("Database connection is nil")
 	}
 
-	row := dba.db.QueryRow("SELECT password from Users WHERE username=?", username)
+	row := dba.db.QueryRow("SELECT password, balance from Users WHERE username=?", username)
 	var password string
-	err := row.Scan(&password)
+	var balance float32
+	err := row.Scan(&password, &balance)
 	if (err != nil) {
-		return "", err
+		return "", 0, err
 	}
-	return password, nil
+	return password, balance, nil
 }
 
 // func (dba DatabaseAccessor) GetUser(username string) id, amount float32 {

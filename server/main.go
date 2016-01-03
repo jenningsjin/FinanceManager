@@ -8,14 +8,18 @@ import (
 )
 
 var dba DatabaseAccessor
+var sm SessionManager
 
 func main() {
-	jsFs := http.FileServer(http.Dir("../templates/"))
-	http.HandleFunc("/", ServeLoginPage)
+	// initialize http server
+	resourceFiles := http.FileServer(http.Dir("../templates/"))
+	http.HandleFunc("/", ServeLogin)
 	http.HandleFunc("/user/", ServeUser)
 	http.HandleFunc("/login/", PostLogin)
-	http.Handle("/js/", jsFs)
+	http.Handle("/js/", resourceFiles)
+	http.Handle("/css/", resourceFiles)
 
+	// initialize database connection
 	err := dba.Connect("root", "", "test")
 	defer dba.Close()
 	if (err != nil) {
@@ -23,31 +27,56 @@ func main() {
 		return
 	}
 
-	var usersMap map[string]float32
-	usersMap, err = dba.ListUsers()
-	if (err != nil) {
-		log.Printf("SQL ERROR: %s\n", err)
-		return
-	}
+	// initialize session manager
+	sm.Init()
 
-	for user, balance := range usersMap {
-		log.Printf("User %s has balance: %f\n", user, balance)
-	}
-
-
+	// start server
 	log.Println("Listening...")
 	http.ListenAndServe(":8080", nil)
 }
 
-type LoginPageData struct {
-	Error string
-}
+func ServeLogin(w http.ResponseWriter, r *http.Request) {
+	ServeUserPage(w, "RICHARD")
+	return
 
-func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
-	// cookie, tmpErr := r.Cookie("session")
-	file := path.Join("../templates", "login.html")
+	cookie, _ := r.Cookie("session")
+	if (cookie != nil) {
+		// check cookie
+		username, result := sm.SessionExists(cookie.Value)
+
+		log.Printf("username: %s\n", username)
+		// go to main page with user
+		if (result) {
+			ServeUserPage(w, username)
+		}
+	}
 
 	errorMsg := r.URL.Query().Get("error")
+	ServeLoginPage(w, errorMsg)
+}
+
+func ServeUser(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := r.Cookie("session")
+	if (cookie != nil) {
+		// check cookie
+		username, result := sm.SessionExists(cookie.Value)
+
+		log.Printf("username: %s\n", username)
+		// go to main page with user
+		if (result) {
+			// pass in username
+		}
+	}
+}
+
+type User struct {
+	Username string
+	Balance float32
+}
+
+// only call this function if user is already validated
+func ServeUserPage(w http.ResponseWriter, username string) {
+	file := path.Join("../templates", "user.html")
 
 	tmpl, err := template.ParseFiles(file)
 	if (err != nil) {
@@ -55,12 +84,44 @@ func ServeLoginPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	LoginPageData := LoginPageData{Error:errorMsg}
-	tmpl.Execute(w, LoginPageData)
+	var mainUser User
+	mainUser.Username = username
+	_, mainUser.Balance, _ = dba.GetUser(username)
+
+
+	var allUsers []User
+
+	userMap, _ := dba.ListUsers()
+	for key, val := range userMap {
+		allUsers = append(allUsers, User{key, val})
+	}
+
+	UserPageData := struct {
+		MainUser User
+		AllUsers []User
+	} {
+		mainUser,
+		allUsers,
+	}
+
+	tmpl.Execute(w, UserPageData)
 }
 
-func ServeUser(w http.ResponseWriter, r *http.Request) {
+func ServeLoginPage(w http.ResponseWriter, errorMsg string) {
+	file := path.Join("../templates", "login.html")
 
+	tmpl, err := template.ParseFiles(file)
+	if (err != nil) {
+		log.Printf("Error Message: %s\n", err)
+		return
+	}
+
+	LoginPageData := struct {
+		errorMessage string
+	} {
+		errorMsg,
+	}
+	tmpl.Execute(w, LoginPageData)
 }
 
 func PostLogin(w http.ResponseWriter, r *http.Request) {
@@ -81,7 +142,7 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	checkedPassword, err := dba.UserPassword(username)
+	checkedPassword, _, err := dba.GetUser(username)
 	if (err != nil) {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("No Such Username"))
@@ -96,7 +157,7 @@ func PostLogin(w http.ResponseWriter, r *http.Request) {
 
 	var cookie http.Cookie
 	cookie.Name = "session"
-	cookie.Value = "value"
+	cookie.Value = sm.GenerateNewSessionId(username)
 	http.SetCookie(w, &cookie)
 
 	w.WriteHeader(http.StatusOK)

@@ -1,0 +1,17 @@
+#main-container {
+	margin-top: 80px;
+	padding: 1% 5% 5% 5%;
+}
+
+#sidebar {
+	/*background-color: lightgrey;*/
+}
+
+#mainbar {
+	/*background-color: lightgrey;*/
+}
+
+.padding-container {
+	margin-bottom: 40px;
+	padding: 10px 30px 10px 30px;
+}
