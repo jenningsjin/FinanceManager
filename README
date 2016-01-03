@@ -1,0 +1,6 @@
+To start SQL bash session:
+mysql -u root -p 
+
+To run an SQL script on a database
+mysql -u root -p <database_name> < <script>
+
