@@ -10,12 +10,13 @@
 		<title>Finance Management</title>
 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<link rel="stylesheet" href="/css/login.css">
 	</head>
 
 	<body>
 		<div class="container">
-			<form id="login-form" action="/login" class="form-signin" method="post" enctype="application/x-www-form-urlencoded">
-				<h2 class="form-signin-heading">Please log in</h2>
+			<form id="login-form" class="form-signin" method="post">
+				<h2 class="form-signin-heading">Log in</h2>
 				<label for="inputUsername" class="sr-only">Username</label>
 				<input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
 				<label for="inputPassword" class="sr-only">Password</label>
@@ -23,8 +24,19 @@
 				<button id="login-button" class="btn btn-lg btn-primary btn-block" action="submit">Log in
 				</button>
 			</form>
-			<h1 id="errorMessage"></h1>
+			<h1 class="errorMessage" id="errorMessageLogin"></h1>
 		</div>
+		<hr>
+		<div class="container">
+			<form id="signup-form" class="form-signin" method="post">
+				<h2 class="form-signin-heading">Or Sign up</h2>
+				<input name="username" type="text" class="form-control" placeholder="Username" required autofocus>
+				<input name="password" type="password" class="form-control" placeholder="Password" required>
+				<button id="signup-button" class="btn btn-lg btn-primary btn-block" action="submit">Sign up
+				</button>
+			</form>
+			<h1 class="errorMessage" id="errorMessageSignup"></h1>
+		</div>		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="/js/login.js"></script>
 	</body>

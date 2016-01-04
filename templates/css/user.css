@@ -3,15 +3,18 @@
 	padding: 1% 5% 5% 5%;
 }
 
-#sidebar {
-	/*background-color: lightgrey;*/
-}
-
-#mainbar {
-	/*background-color: lightgrey;*/
+#errorMessage {
+	color: red;
 }
 
 .padding-container {
 	margin-bottom: 40px;
 	padding: 10px 30px 10px 30px;
+}
+
+.hasBorder {
+	border: 2px lightgrey solid;
+	padding-left: 7px;
+	padding-right: 7px;
+	margin-bottom: 15px;
 }
