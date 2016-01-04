@@ -49,6 +49,7 @@ func ServeLogin(w http.ResponseWriter, r *http.Request) {
 		// go to main page with user
 		if (result) {
 			ServeUserPage(w, username)
+			return
 		}
 	}
 
