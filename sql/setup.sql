@@ -9,7 +9,7 @@ CREATE TABLE Transactions (
 	debtor int NOT NULL,
 	debtee int NOT NULL,
 	amount FLOAT NOT NULL,
-	description VARCHAR(50),
+	description VARCHAR(100),
 	ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (Debtor) REFERENCES Users(id),
 	FOREIGN KEY (Debtee) REFERENCES Users(id));

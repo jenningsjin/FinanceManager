@@ -101,6 +101,8 @@ func ServeUserPage(w http.ResponseWriter, username string) {
 	var transactions []Transaction
 	transactions, err = dba.GetTransactions()
 
+	sort.Sort(TransactionByTime(transactions))
+
 	sort.Sort(UserSlice(allUsers))
 
 	// transactions needed for everyone to be at 0 balance

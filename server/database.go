@@ -24,18 +24,33 @@ type Transaction struct {
 	Timestamp string
 }
 
+/**
+ * @brief Connects to a mysql database
+ * @param string database username
+ * @param string database password
+ * @param string name of database
+ * @return error or nil
+ */
 func (dba* DatabaseAccessor) Connect(databaseUsername string, databasePassword string, databaseName string) error {
 	var err error
 	dba.db, err = sql.Open("mysql", databaseUsername + ":" + databasePassword + "@/" + databaseName)
 	return err
 }
 
+/**
+ * @brief Closes Database connection
+ */
 func (dba* DatabaseAccessor) Close() {
 	if (dba.db != nil) {
 		dba.db.Close()
 	}
 }
 
+/**
+ * @brief Creates a User in the database
+ * @details Username must be unique for all users
+ * will return non-nil error if username already exists
+ */
 func (dba* DatabaseAccessor) CreateUser(username string, password string) error {
 	if (dba.db == nil) {
 		return errors.New("Database connection is nil")
@@ -45,6 +60,14 @@ func (dba* DatabaseAccessor) CreateUser(username string, password string) error 
 	return err
 }
 
+/**
+ * @brief Creates a transaction
+ * @details The database will automatically update the balances of each user
+ * @param debtor the person who owes money
+ * @param debtee the person who is owed money
+ * @param amount the amount of money owed
+ * @param description a description of the transaction
+ */
 func (dba* DatabaseAccessor) CreateTransaction(debtor string, 
 	debtee string, 
 	amount float32, 
@@ -72,6 +95,9 @@ func (dba* DatabaseAccessor) CreateTransaction(debtor string,
 	return err
 }
 
+/**
+ * @brief Returns a map of all users mapping from username to balance
+ */
 func (dba* DatabaseAccessor) ListUsers() (map[string]float32, error) {
 	ret := make(map[string]float32)
 	if (dba.db == nil) {

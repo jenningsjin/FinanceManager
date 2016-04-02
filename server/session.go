@@ -12,16 +12,25 @@ type SessionManager struct {
 	CookieMap map[string]string
 }
 
+/**
+ * @brief Initializes a session manager
+ */
 func (sm *SessionManager) Init() {
 	sm.CookieMap = make(map[string]string)
 }
 
+/**
+ * @brief Generates a new session id
+ * @details guaranteed to be unique
+ * The session id is stored in the session manager
+ * and can only be deleted with DeleteSession
+ */
 func (sm* SessionManager) GenerateNewSessionId(username string) string {
-	cookie := sm.GenerateRandomCookie(CookieLength)
+	cookie := sm.generateRandomCookie(CookieLength)
 
 	for {
 		if _, ok := sm.CookieMap[cookie]; ok {
-			cookie = sm.GenerateRandomCookie(CookieLength)
+			cookie = sm.generateRandomCookie(CookieLength)
 		} else {
 			break
 		}
@@ -31,6 +40,9 @@ func (sm* SessionManager) GenerateNewSessionId(username string) string {
 	return cookie
 }
 
+/**
+ * @brief Checks is a seesion id exists
+ */
 func (sm* SessionManager) SessionExists(cookie string) (string, bool) {
 	if username, ok := sm.CookieMap[cookie]; ok {
 		return username, true
@@ -43,9 +55,11 @@ func (sm* SessionManager) DeleteSession(cookie string) {
 	delete(sm.CookieMap, cookie)
 }
 
-
-// "private", used by GetSessionId
-func (sm *SessionManager) GenerateRandomCookie(length int) string {
+/**
+ * @brief "Private" functions used by GenerateNewSessionId
+ * @details generates a random cookie
+ */
+func (sm *SessionManager) generateRandomCookie(length int) string {
 	rand.Seed(time.Now().Unix())
 	
 	cookie := make([]byte, length)
