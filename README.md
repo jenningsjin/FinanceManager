@@ -1,6 +1,8 @@
 #### Structure and Overview
 Front End is written with stand web things (html, css, javascript)
-Back End is written with Python and Flask
+
+Back End is written with Python and Flask, database is MySQL
+
 
 #### Requirements
 * Python + Python Flask: "*pip install flask*"
