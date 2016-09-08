@@ -7,13 +7,15 @@ Back End is written with Python and Flask, database is MySQL
 #### Requirements
 It's probably best to put all all of the environment stuff into a virtual env, but w/e
 * Python + Python Flask: "*pip install flask*"
-* MySQL
+* MySQL: "sudo apt-get install mysql-server" 
 
-
+MySQL will have to configured during the install
 
 #### How to Run
 Command runs it on localhost of the machine
 * "*python app.py*"
+
+#### Structure
 
 
 #### Libraries Used
