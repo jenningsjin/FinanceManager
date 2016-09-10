@@ -10,49 +10,46 @@ CREATE TABLE TRANSACTIONS (
 	-- debtee int NOT NULL,
 	AMOUNT FLOAT NOT NULL,
 	DESCRIPTION VARCHAR(240),
-	TS TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (Debtor) REFERENCES Users(id),
-	FOREIGN KEY (Debtee) REFERENCES Users(id)
+	TS TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE LOANERS (
-	-- ENTRY_ID INT,
 	TX_ID INT,
 	USER_ID INT,
 	PRIMARY KEY(TX_ID, USER_ID),
-	FOREIGN KEY(TX_ID) REFERENCES Transactions ON DELETE CASCADE,
-	FOREIGN KEY(USER_ID) REFERENCES Users ON DELETE CASCADE
+	FOREIGN KEY(TX_ID) REFERENCES TRANSACTIONS(TX_ID) ON DELETE CASCADE,
+	FOREIGN KEY(USER_ID) REFERENCES USERS(USER_ID) ON DELETE CASCADE
 );
 
 CREATE TABLE OWERS (
 	TX_ID INT,
 	USER_ID INT,
 	PRIMARY KEY(TX_ID, USER_ID),
-	FOREIGN KEY(TX_ID) REFERENCES Transactions ON DELETE CASCADE,
-	FOREIGN KEY(USER_ID) REFERENCES Users ON DELETE CASCADE
+	FOREIGN KEY(TX_ID) REFERENCES TRANSACTIONS(TX_ID) ON DELETE CASCADE,
+	FOREIGN KEY(USER_ID) REFERENCES USERS(USER_ID) ON DELETE CASCADE
 );
 
-DELIMITER $$
-CREATE TRIGGER transaction_create AFTER INSERT ON Transactions 
-	FOR EACH ROW BEGIN
-		UPDATE Users SET balance=balance+NEW.amount WHERE id=NEW.debtee;
-		UPDATE Users SET balance=balance-NEW.amount WHERE id=NEW.debtor;
-	END$$
-DELIMITER ;
+-- DELIMITER $$
+-- CREATE TRIGGER transaction_create AFTER INSERT ON Transactions 
+-- 	FOR EACH ROW BEGIN
+-- 		UPDATE Users SET balance=balance+NEW.amount WHERE id=NEW.debtee;
+-- 		UPDATE Users SET balance=balance-NEW.amount WHERE id=NEW.debtor;
+-- 	END$$
+-- DELIMITER ;
 
-DELIMITER $$
-CREATE TRIGGER transaction_delete AFTER DELETE ON Transactions
-	FOR EACH ROW BEGIN
-		UPDATE Users SET balance=balance-OLD.amount WHERE id=OLD.debtee;
-		UPDATE Users SET balance=balance+Old.amount WHERE id=OLD.debtor;
-	END$$
-DELIMITER ;
+-- DELIMITER $$
+-- CREATE TRIGGER transaction_delete AFTER DELETE ON Transactions
+-- 	FOR EACH ROW BEGIN
+-- 		UPDATE Users SET balance=balance-OLD.amount WHERE id=OLD.debtee;
+-- 		UPDATE Users SET balance=balance+Old.amount WHERE id=OLD.debtor;
+-- 	END$$
+-- DELIMITER ;
 
-DELIMITER $$
-CREATE TRIGGER transaction_update AFTER UPDATE ON Transactions
-	FOR EACH ROW BEGIN
-		UPDATE Users SET balance=balance-OLD.amount+NEW.amount WHERE id=OLD.debtee;
-		UPDATE Users SET balance=balance+Old.amount-NEW.amount WHERE id=OLD.debtor;
-	END$$
-DELIMITER ;
+-- DELIMITER $$
+-- CREATE TRIGGER transaction_update AFTER UPDATE ON Transactions
+-- 	FOR EACH ROW BEGIN
+-- 		UPDATE Users SET balance=balance-OLD.amount+NEW.amount WHERE id=OLD.debtee;
+-- 		UPDATE Users SET balance=balance+Old.amount-NEW.amount WHERE id=OLD.debtor;
+-- 	END$$
+-- DELIMITER ;
 
