@@ -1,6 +1,9 @@
 #Python Libs and Imports
 # from flask import Flask
-from flask import *
+from flask import Flask
+from flaskext.mysql import MySQL
+
+
 #Importing the blueprint object from other Files
 from login import login
 from user import user
@@ -8,10 +11,19 @@ from user import user
 #Sets the application Variable name
 app = Flask(__name__)
 
+
+# MySQL configurations, pretty self explanatory
+mysql = MySQL()
+app.config['MYSQL_DATABASE_USER'] = 'finance'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
+app.config['MYSQL_DATABASE_DB'] = 'FINANCE_APP'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+mysql.init_app(app)
+
 #Register routes in other files
 app.register_blueprint(login)
 app.register_blueprint(user)
-
+#MySQL Database Configs
 
 
 #This is an app route, a route is pretty much one URL
@@ -29,3 +41,5 @@ def hellos():
 
 if __name__ == "__main__":
     app.run()
+
+#root@localhost: k9upiI;TID!>

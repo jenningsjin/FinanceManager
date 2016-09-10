@@ -4,4 +4,8 @@ login = Blueprint('login', __name__)
 
 @login.route("/login")
 def accountList():
-    return "login page"
+	return "login page"
+
+@login.route('/signUp',methods=['POST'])
+def signUp():
+	return "default"

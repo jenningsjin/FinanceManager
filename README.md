@@ -7,6 +7,7 @@ Back End is written with Python and Flask, database is MySQL
 ### Requirements
 It's probably best to put all all of the environment stuff into a virtual env, but w/e
 * Python + Python Flask: "*pip install flask*"
+* Flask My-SQL extension: "pip install flask-mysql"
 * MySQL/MariaDB: "sudo apt-get install mysql-server" or "brew install mariadb" 
 * GUnicorn: run the server or something
 
