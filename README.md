@@ -1,7 +1,5 @@
-### Structure and Overview
-Front End is written with stand web things (html, css, javascript)
-
-Back End is written with Python and Flask, database is MySQL
+### Overview
+The Fine Ant Finance App! Brought to you by Alectryon Tech-tryon, a simple web-app to help you manage you finances among a group of people, great for college and roommates!
 
 
 ### Requirements
@@ -11,23 +9,26 @@ It's probably best to put all all of the environment stuff into a virtual env, b
 * MySQL/MariaDB: "sudo apt-get install mysql-server" or "brew install mariadb" 
 * GUnicorn: run the server or something
 
-MySQL will have to configured during the install, if MySQL is too clunky, use
-
-### How to Run
+### How to Configure and Run
 * Install the appropriate libraries
+* Properly Configure the Database, make sure it's running
+* Run application: "*python app.py*"
+* Alternatively, you can serve it with Gunicorn
 
-
-Command runs it on localhost of the machine
-* "*python app.py*"
+After we finish the project, we'll add a couple of init scripts.
 
 ### Structure
+*Front-End*: Using the standard web-kit (html, css, javascript + jQuery), a basic interface that does exactly what you think it does, it sends the requests over to the Back-End for processing.
+
+*Back End*: The Flask Layer receives requests from the front-end via get/post requests and processes them.
 
 *MySQL*: Used MariaDB on Mac because it's way easier to install. in the scripts folder, There'll be scripts to various things such as load/reload the SQL Tables, for the sake of example, we're going to use:
 * User: "finance"
-* Password: "Password"
-That will create all the tables.
+* Password: "password"
 
-
-#### Libraries Used
+#### Libraries/Things Used
 * Python Flask
+* MySQL
+* Gunicorn
+* Bootstrap
 * [picitelli's simple modal library](https://github.com/picitelli/js-modal)
