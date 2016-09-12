@@ -32,7 +32,7 @@ app.register_blueprint(user)
 ## 1) Start reading here, then follow the numbers
 #	  This is an app route, a route is pretty much one URL, we've defined the root address
 #	  below to return a page that just says "hello world"
-@app.route("/") 
+@app.route("/")
 def hello():
     return "Hello World!" #what the route returns is the data that will be rendered onto the page
 
