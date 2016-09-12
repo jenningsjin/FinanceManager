@@ -12,6 +12,7 @@ app = Flask(__name__)
 
 
 # MySQL configurations, pretty self explanatory
+# This stuff also needs to be 
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'finance'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
@@ -29,7 +30,7 @@ app.register_blueprint(user)
 
 
 
-## 1) Start reading here, then follow the numbers
+## 1) Start reading here, go down until prompted to move to a different section
 #	  This is an app route, a route is pretty much one URL, we've defined the root address
 #	  below to return a page that just says "hello world"
 @app.route("/")
@@ -41,13 +42,25 @@ def hello():
 # which you can see above at 2)
 @app.route("/testo")
 def hellos():
-	data = { 
-		'example': "cheese", 
+	# So in more detail, what happens is that when we go to https://<root-address>/testo,
+	# this route testo, is executed, so for our intents and purposes, the function hellos gets run
+	# Whatever we return is rendered to the page. So this is the spot where we can do preprocessing
+	# of whatever data we pull, which we can then toss into the template
+
+	data = {  #we've defined a good ol' python dictionary here, but in my mind, it's really a json by the
+		'example': "cheese",  # time we get to the js side.
 		'number': 10
 	}
 	return render_template('test.html', data=data)
+	# We can see above that when we return a function that says renders a template (literally named)
+	# if we have a "templates" folder, then flask will automatically look there.
+	#
+	# Also, we pass in any data that we want to access in the template
+	# into the function. I believe you can pass in as many variables as you want, but it's way easier than
+	# that to just pass in an object, it's defined as: <name in template> = <variable you pass in>
+	# the template name can be anything
 
-
+# 1) is over, go to 2) above
 if __name__ == "__main__":
     app.run()
 
