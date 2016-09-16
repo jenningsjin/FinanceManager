@@ -1,5 +1,5 @@
 ### Overview
-The Fine Ant Finance App! Brought to you by Alectryon Tech-tryon, a simple web-app to help you manage you finances among a group of people, great for college and roommates!
+The Fine Ants Finance App! Brought to you by Alectryon Tech-tryon, a simple web-app to help you manage you finances among a group of people, great for college and roommates!
 
 
 ### Requirements
